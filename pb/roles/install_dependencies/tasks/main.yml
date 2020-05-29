@@ -1,0 +1,22 @@
+---
+- name: Install dependencies - curl
+  become: yes
+  apt:
+    update_cache: yes
+    pkg:
+    - curl
+    state: present
+
+- name: check if docker compose is installed
+  become: yes
+  shell: |
+    docker-compose --version
+  register: docker_compose_check
+
+- name: install docker-compose
+  become: yes
+  shell: |
+    curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  args:
+    warn: false
+  when: docker_compose_check.rc != 0

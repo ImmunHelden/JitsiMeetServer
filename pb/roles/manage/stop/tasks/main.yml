@@ -1,0 +1,6 @@
+---
+- name: Stop jitsi docker container
+  become_user: "{{ jitsi_service_user }}"
+  shell: |
+    cd "{{ config_folder }}"
+    docker-compose stop
