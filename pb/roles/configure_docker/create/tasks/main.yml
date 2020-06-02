@@ -36,3 +36,4 @@
   with_items:
     - "docker-compose.yml"
     - ".env"
+    - "certbot-update.sh"
