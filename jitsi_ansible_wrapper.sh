@@ -126,16 +126,16 @@ if [[ $install -eq 1 ]]; then
   install_jitsi_server
 fi
 
-if [[ $restart -eq 1 ]]; then
-  restart_jitsi_server
-fi
-
 if [[ $start -eq 1 ]]; then
   start_jitsi_server
 fi
 
 if [[ $stop -eq 1 ]]; then
   stop_jitsi_server
+fi
+
+if [[ $restart -eq 1 ]]; then
+  restart_jitsi_server
 fi
 
 if [[ $down -eq 1 ]]; then
