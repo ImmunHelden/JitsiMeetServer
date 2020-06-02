@@ -13,6 +13,6 @@
 
 - hosts: jitsi-host[0]
   roles:
-    - { role: ./roles/manage/stop }
+    - { role: ./roles/manage/down }
     - { role: ./roles/configure_docker/remove }
     - { role: ./roles/configure_host/remove }
