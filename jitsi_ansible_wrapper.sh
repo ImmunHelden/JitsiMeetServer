@@ -37,38 +37,55 @@ usage() {
   echo
   echo "Options:"
   echo "  -i, --install                                               : installs all jitsi related services and docker containers"
-  echo "  -u, --start                                                 : starts all jitsi related services and docker containers" #todo
-  echo "  -s, --stop                                                  : stops all jitsi related services and docker containers" #todo
-  echo " -rs, --restart                                               : starts all jitsi related services and docker containers" #todo
-  echo "  -d, --down                                                  : down all jitsi related services and docker containers" #todo
   echo "  -r, --remove                                                : resets the host and removes everything jitsi related"
-  echo "      --dry-run                                               : Do not make any changes, just print commands" # todo
+  echo "  -u, --up                                                    : starts all jitsi related services and docker containers"
+  echo "  -d, --down                                                  : down all jitsi related services and docker containers"
+  echo "      --reset                                                 : runs all roles successively to completly reinstall and startup the jitsi services"
+  echo " -cu, --creatuser                                             : create a new user"
+  echo "      --username <username>                                   : the username parameter for a new user"
+  echo "      --password <password>                                   : the password parameter for a new user"
+  echo " -rs, --restart                                               : starts all jitsi related services and docker containers"
+  echo "      --dry-run                                               : Do not make any changes, just print commands"
   echo "  -v, --version                                               : Show program version"
   echo "      --debug                                                 : Enable debug output"
 }
 
 install_jitsi_server() {
+  echo "install dependencies and configure host"
   ${dry} ${__ANSIBLE_PLAYBOOK} ${inventory} ${secrets_inventory} --become --ask-vault-pass $verbose "${pb_dir}/install.yml"
 }
 
-start_jitsi_server() {
-  ${dry} ${__ANSIBLE_PLAYBOOK} ${inventory} ${secrets_inventory} --become --ask-vault-pass $verbose "${pb_dir}/start.yml"
+up_jitsi_server() {
+  echo "start service container"
+  ${dry} ${__ANSIBLE_PLAYBOOK} ${inventory} ${secrets_inventory} --become --ask-vault-pass $verbose "${pb_dir}/up.yml"
 }
 
 restart_jitsi_server() {
+  echo "reinitialize container services"
   ${dry} ${__ANSIBLE_PLAYBOOK} ${inventory} ${secrets_inventory} --become --ask-vault-pass $verbose "${pb_dir}/restart.yml"
 }
 
 down_jitsi_server() {
+  echo "shut down container services"
   ${dry} ${__ANSIBLE_PLAYBOOK} ${inventory} ${secrets_inventory} --become --ask-vault-pass $verbose "${pb_dir}/down.yml"
 }
 
-stop_jitsi_server() {
-  ${dry} ${__ANSIBLE_PLAYBOOK} ${inventory} ${secrets_inventory} --become --ask-vault-pass $verbose "${pb_dir}/stop.yml"
+remove_jitsi_server() {
+  echo "reset host"
+  ${dry} ${__ANSIBLE_PLAYBOOK} ${inventory} ${secrets_inventory} --become --ask-vault-pass $verbose "${pb_dir}/remove.yml"
 }
 
-remove_jitsi_server() {
-  ${dry} ${__ANSIBLE_PLAYBOOK} ${inventory} ${secrets_inventory} --become --ask-vault-pass $verbose "${pb_dir}/remove.yml"
+reset_jitsi_server() {
+  echo "reset host, reinstall and bootup service container"
+  ${dry} ${__ANSIBLE_PLAYBOOK} ${inventory} ${secrets_inventory} --become --ask-vault-pass $verbose "${pb_dir}/reset.yml"
+}
+
+create_new_user() {
+  echo "create new user"
+  local _username="--extra-vars new_user=$1"
+  local _password="--extra-vars new_password=$2"
+
+  ${dry} ${__ANSIBLE_PLAYBOOK} ${inventory} ${secrets_inventory} --become --ask-vault-pass $verbose "${pb_dir}/new_user.yml" ${_username} ${_password}
 }
 
 for prog in "${deps[@]}"; do
@@ -87,17 +104,28 @@ while [[ $# -gt 0 ]]; do
     -rs|--restart)
       restart=1
     ;;
-    -u|--start)
-      start=1
+    --reset)
+      reset=1
     ;;
-    -s|--stop)
-      stop=1
+    -u|--up)
+      up=1
     ;;
     -d|--down)
       down=1
     ;;
     -r|--remove)
       remove=1
+    ;;
+    --createuser)
+      createuser=1
+    ;;
+    --username)
+      username=${2}
+      shift
+    ;;
+    --password)
+      password=${2}
+      shift
     ;;
     --debug)
       set -x
@@ -126,12 +154,8 @@ if [[ $install -eq 1 ]]; then
   install_jitsi_server
 fi
 
-if [[ $start -eq 1 ]]; then
-  start_jitsi_server
-fi
-
-if [[ $stop -eq 1 ]]; then
-  stop_jitsi_server
+if [[ $up -eq 1 ]]; then
+  up_jitsi_server
 fi
 
 if [[ $restart -eq 1 ]]; then
@@ -144,4 +168,12 @@ fi
 
 if [[ $remove -eq 1 ]]; then
   remove_jitsi_server
+fi
+
+if [[ $reset -eq 1 ]]; then
+  reset_jitsi_server
+fi
+
+if [[ $createuser -eq 1 ]]; then
+  create_new_user $username $password
 fi

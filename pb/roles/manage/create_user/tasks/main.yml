@@ -1,0 +1,6 @@
+---
+- name: Create new internal user
+  become: yes
+  shell: |
+    cd "{{ config_folder }}"
+    docker exec $(docker ps -q -f name=jitsi_prosody_1) bash -c "prosodyctl --config /config/prosody.cfg.lua register '{{ new_user }}' meet.jitsi {{ new_password }}"

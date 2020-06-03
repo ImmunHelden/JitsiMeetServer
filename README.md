@@ -17,3 +17,11 @@
     -v, --version                  # Show program version
         --debug                    # Enable debug output
 ```
+
+## Letsencrypt
+
+Remove the mounting configuration to enable production certs
+
+```yaml
+    - ${CONFIG}/certbot-update.sh:/etc/cont-init.d/05-certboot-update # TODO: remove this mount to enable a productive lets encrypt cert
+```

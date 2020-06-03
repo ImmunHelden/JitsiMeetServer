@@ -1,7 +1,6 @@
 ---
 - name: Down jitsi docker container
-  become_user: "{{ jitsi_service_user }}"
-  ignore_errors: yes
+  become: yes
   shell: |
-    cd {{ config_folder }}
+    cd "{{ config_folder }}"
     docker-compose down

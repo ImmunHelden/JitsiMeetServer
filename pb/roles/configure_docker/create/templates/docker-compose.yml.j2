@@ -15,6 +15,7 @@ services:
             - ${CONFIG}/certbot-update.sh:/etc/cont-init.d/05-certboot-update # TODO: remove this mount to enable a productive lets encrypt cert
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts
         environment:
+            - AUTH_TYPE
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - ENABLE_LETSENCRYPT

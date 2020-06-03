@@ -1,5 +1,6 @@
 ---
 - name: "REMOVE: delete config files"
+  become: yes
   file:
     state: absent
     path: "{{ config_folder }}"
