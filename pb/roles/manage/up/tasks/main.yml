@@ -4,3 +4,9 @@
   shell: |
     cd "{{ config_folder }}"
     docker-compose up -d
+
+- name: Fix file permissions on host
+  become: yes
+  become_user: root
+  shell: |
+    chmod 777 "{{ config_folder }}"

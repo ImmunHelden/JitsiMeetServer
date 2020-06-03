@@ -13,4 +13,4 @@
 
   - hosts: jitsi-host[0]
     roles:
-      - { role: ./roles/manage/stop }
+      - { role: ./roles/manage/up }
