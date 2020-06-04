@@ -11,6 +11,19 @@ Some variables are not implemented yet commented for example `JIGASI` or `LDAP` 
 
 ## Usage
 
+### Preparations
+
+A valid host konfiguration must be supplied in the ansible inventory this includes
+
+- ssh key
+- user
+- ip address
+
+Additionally each of the Ansible wrapper script functions needs a password for the ansible-vault during execution.
+If the secrets in the ansible-vault need to be changed, use the following command `ansible-vault edit inventory/secrets_inventory.ini`.
+
+### Ansible wrapper script
+
 ```bash
 Usage examples:
 
@@ -34,7 +47,7 @@ Options:
        --debug                    # Enable debug output
 ```
 
-## Letsencrypt
+## Letsencrypt test cert
 
 Enable staging certificats
 
