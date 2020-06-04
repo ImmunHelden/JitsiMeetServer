@@ -1,33 +1,28 @@
 ---
-- name: Configure service user
+- name: Create docker group
   become: yes
-  block:
+  group:
+    name: docker
+    state: present
 
-    - name: Create docker group
-      group:
-        name: docker
-        state: present
-      when: delete | default(false) == false
+- name: Create service user group
+  become: yes
+  group:
+    name: "{{ jitsi_service_user }}"
+    state: present
 
-    - name: Create service user group
-      group:
-        name: "{{ jitsi_service_user }}"
-        state: present
-      when: delete | default(false) == false
+- name: create service user
+  become: yes
+  user:
+    name: "{{ jitsi_service_user }}"
+    shell: /bin/bash
+    password: "{{ jitsi_service_user_password_hash }}"
+    comment: service user for jitsi and related services
+    group: "{{ jitsi_service_user }}"
 
-    - name: create service user
-      user:
-        name: "{{ jitsi_service_user }}"
-        shell: /bin/bash
-        password: "{{ jitsi_service_user_password_hash }}"
-        comment: service user for jitsi and related services
-        group: "{{ jitsi_service_user }}"
-      when: delete | default(false) == false
-
-    - name: Add service user to docker group
-      user:
-        name: "{{ jitsi_service_user }}"
-        groups: docker
-        append: yes
-      when: delete | default(false) == false
-  when: delete | default(false) == false
+- name: Add service user to docker group
+  become: yes
+  user:
+    name: "{{ jitsi_service_user }}"
+    groups: docker
+    append: yes
