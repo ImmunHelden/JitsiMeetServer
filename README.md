@@ -21,10 +21,10 @@ Usage examples:
 
 Options:
   -i,  --install                  # installs all jitsi related services and docker containers
-  -r,  --remove                   # resets the host and removes everything jitsi related
+  -r,  --remove                   # resets the host and removes everything jitsi related !!! removes users for internal auth !!!
   -u,  --up                       # starts all jitsi related services and docker containers
   -d,  --down                     # down all jitsi related services and docker containers
-       --reset                    # runs all roles successively to completly reinstall and startup the jitsi services
+       --reset                    # runs all roles successively to completly reinstall and startup the jitsi services !!! removes users for internal auth !!!
   -cu, --creatuser                # create a new user
        --username <username>      # the username parameter for a new user
        --password <password>      # the password parameter for a new user
