@@ -27,10 +27,10 @@ If the secrets in the ansible-vault need to be changed, use the following comman
 ```bash
 Usage examples:
 
-  jitsi_ansible_wrapper --install
-  jitsi_ansible_wrapper --start
-  jitsi_ansible_wrapper --reset
-  jitsi_ansible_wrapper --createuser --username <username> --password <password>
+  bash jitsi_ansible_wrapper --install
+  bash jitsi_ansible_wrapper --start
+  bash jitsi_ansible_wrapper --reset
+  bash jitsi_ansible_wrapper --createuser --username <username> --password <password>
 
 Options:
   -i,  --install                  # installs all jitsi related services and docker containers
@@ -52,10 +52,13 @@ Options:
 Enable staging certificats
 
 - Enable the mount for service web in docker-compose template `/pc/roles/configure_docker/create/templates/docker-compose.yml.j2`
+
   ```yaml
       # - ${CONFIG}/certbot-update.sh:/etc/cont-init.d/05-certboot-update
   ```
+
 - Add parameter injection in ansible inventory `/inventory/inventory.ini` for variable `letsencrypt_email`
+
   ```ini
     letsencrypt_email="jitsi@meet.de --test-cert --break-my-certs"
   ```
