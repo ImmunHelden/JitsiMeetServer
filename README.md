@@ -19,8 +19,17 @@ A valid host konfiguration must be supplied in the ansible inventory this includ
 - user
 - ip address
 
-Additionally each of the Ansible wrapper script functions needs a password for the ansible-vault during execution.
+Additionally each of the Ansible wrapper script functions needs the secrets variables in the file `inventory/secrets_inventory.ini` a template with some explanation exitsts at `inventory/secrets_infentory.example.ini`.
+
+Create an encrypted ansible-vault file with the content of the example file and set the values.
+
+```shell
+  $ ansible-vault create inventory/secrets_inventory.ini
+```
+
 If the secrets in the ansible-vault need to be changed, use the following command `ansible-vault edit inventory/secrets_inventory.ini`.
+
+Dokumentation for ansible-vaults can be found here https://docs.ansible.com/ansible/latest/user_guide/vault.html
 
 ### Ansible wrapper script
 
@@ -49,7 +58,7 @@ Options:
 
 ## Letsencrypt test cert
 
-Enable staging certificats
+Enable staging / testing certificats
 
 - Enable the mount for service web in docker-compose template `/pc/roles/configure_docker/create/templates/docker-compose.yml.j2`
 
