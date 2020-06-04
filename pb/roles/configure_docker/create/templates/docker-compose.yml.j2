@@ -12,7 +12,7 @@ services:
             - ${CONFIG}/web:/config
             - ${CONFIG}/web/letsencrypt:/etc/letsencrypt
             - ${CONFIG}/web/letsencrypt:/var/log/letsencrypt
-            - ${CONFIG}/certbot-update.sh:/etc/cont-init.d/05-certboot-update # TODO: remove this mount to enable a productive lets encrypt cert
+            # - ${CONFIG}/certbot-update.sh:/etc/cont-init.d/05-certboot-update # enable this mount to generate a test script to avoid letsencrypt raise limits
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts
         environment:
             - AUTH_TYPE
