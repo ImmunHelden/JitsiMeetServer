@@ -34,6 +34,8 @@ usage() {
   echo
   echo "$0 --install"
   echo "$0 --start"
+  echo "$0 --reset"
+  echo "$0 --createuser --username <username> --password <password>"
   echo
   echo "Options:"
   echo "  -i, --install                                               : installs all jitsi related services and docker containers"
@@ -45,7 +47,7 @@ usage() {
   echo "      --username <username>                                   : the username parameter for a new user"
   echo "      --password <password>                                   : the password parameter for a new user"
   echo " -rs, --restart                                               : starts all jitsi related services and docker containers"
-  echo "      --dry-run                                               : Do not make any changes, just print commands"
+  echo "      --dry-run                                               : Do not make any changes, just print ansible commands"
   echo "  -v, --version                                               : Show program version"
   echo "      --debug                                                 : Enable debug output"
 }
@@ -135,7 +137,7 @@ while [[ $# -gt 0 ]]; do
       echo $version
       exit 0
     ;;
-    --dry-run) # todo
+    --dry-run)
       dry="echo"
     ;;
     -h|--help)
