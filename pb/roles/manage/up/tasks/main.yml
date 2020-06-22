@@ -1,0 +1,31 @@
+---
+- name: Start jitsi docker container
+  become: yes
+  shell: |
+    cd "{{ config_folder }}"
+    docker-compose up -d
+
+- name: Set permissions for container created files
+  become: yes
+  become_user: root
+  shell: |
+    counter=0
+    while [ ! -f "{{ config_folder }}/web/interface_config.js" ]
+    do
+      echo "waiting ..."
+      sleep 1
+      if [ $counter -eq 20 ]; then
+        echo "timeout"
+        exit 1
+      fi
+    done
+    chown -R root:root "{{ config_folder }}"
+    docker exec $(docker ps -q -f name=jitsi_web_1) bash -c "chown -R root:root /config"
+    docker exec $(docker ps -q -f name=jitsi_web_1) bash -c "chmod 777 /config"
+
+- name: Restart after initialization
+  become: yes
+  shell: |
+    cd "{{ config_folder }}"
+    docker-compose stop
+    docker-compose start

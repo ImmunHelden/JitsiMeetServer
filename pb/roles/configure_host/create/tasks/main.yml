@@ -1,0 +1,28 @@
+---
+- name: Create docker group
+  become: yes
+  group:
+    name: docker
+    state: present
+
+- name: Create service user group
+  become: yes
+  group:
+    name: "{{ jitsi_service_user }}"
+    state: present
+
+- name: create service user
+  become: yes
+  user:
+    name: "{{ jitsi_service_user }}"
+    shell: /bin/bash
+    password: "{{ jitsi_service_user_password_hash }}"
+    comment: service user for jitsi and related services
+    group: "{{ jitsi_service_user }}"
+
+- name: Add service user to docker group
+  become: yes
+  user:
+    name: "{{ jitsi_service_user }}"
+    groups: docker
+    append: yes

@@ -1,0 +1,13 @@
+---
+- name: delete service user
+  become: yes
+  user:
+    name: "{{ jitsi_service_user }}"
+    state: absent
+    remove: yes
+
+- name: delete service group
+  become: yes
+  group:
+    name: "{{ jitsi_service_user }}"
+    state: absent

@@ -1,0 +1,39 @@
+---
+- name: "Create configuration Root folder"
+  become: yes
+  file:
+    state: directory
+    owner: "{{ jitsi_service_user }}"
+    group: "{{ jitsi_service_user }}"
+    mode: '0770'
+    path: "{{ config_folder }}"
+
+- name: "Create configuration sub folders"
+  become: yes
+  file:
+    state: directory
+    owner: "{{ jitsi_service_user }}"
+    group: "{{ jitsi_service_user }}"
+    mode: '0770'
+    path: "{{ config_folder }}/{{ item }}"
+  with_items:
+    - web/letsencrypt
+    - transcripts
+    - prosody
+    - jicofo
+    - jvb
+    - jigasi
+    - jibri
+
+- name: "Template and copy .env and docker-compose files"
+  become: yes
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ config_folder }}/{{ item }}"
+    owner: "{{ jitsi_service_user }}"
+    group: "{{ jitsi_service_user }}"
+    mode: '0770'
+  with_items:
+    - "docker-compose.yml"
+    - ".env"
+    - "certbot-update.sh"
